@@ -1,11 +1,17 @@
-const env = process.env;
+import { createConnection } from "typeorm";
 
 /**
  * メイン処理
  */
 const main = () => {
-  console.log(env.ENV1);
-  console.log("Hello TypeScript!!");
+  createConnection()
+    .then((connection) => {
+      console.log("Hello TypeScript!!");
+      connection.close();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 main();
