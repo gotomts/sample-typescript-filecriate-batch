@@ -1,6 +1,9 @@
 {
   "defaultSeverity": "error",
-  "extends": ["tslint-config-airbnb", "tslint-config-prettier"],
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
   "jsRules": [],
   "rules": {
     "typedef-whitespace": true,
@@ -16,11 +19,16 @@
         "enum-members": true,
         "functions": true,
         "methods": {
-          "pprivates": ["public", "protected"]
+          "pprivates": [
+            "public",
+            "protected"
+          ]
         },
         "interfaces": true
       }
     ]
   },
-  "rulesDirectory": ["tslint-plugin-prettier"]
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ]
 }
