@@ -7,7 +7,6 @@ const main = () => {
   createConnection(ormconfig)
     .then((connection) => {
       console.log("Hello TypeScript!!");
-      console.log(ormconfig);
       connection.close();
     })
     .catch((error) => {
