@@ -1,6 +1,6 @@
 import * as Faker from "faker";
 import { define } from "typeorm-seeding";
-import { Book } from "../entity/Book";
+import { Book } from "../entity/book";
 
 define(Book, (faker: typeof Faker) => {
   const title = faker.name.title();
