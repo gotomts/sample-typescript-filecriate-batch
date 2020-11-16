@@ -1,5 +1,5 @@
 {
-  "name": "typescript-filecreate-batch",
+  "name": "typescript-s3-fileupload",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/main.js",
@@ -17,14 +17,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:gotomts/typescript-filecreate-batch.git"
+    "url": "git@github.com:gotomts/typescript-s3-fileupload.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gotomts/typescript-filecreate-batch"
+    "url": "https://github.com/gotomts/typescript-s3-fileupload"
   },
-  "homepage": "https://github.com/gotomts/typescript-filecreate-batch#readme",
+  "homepage": "https://github.com/gotomts/typescript-s3-fileupload#readme",
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "@types/mysql": "^2.15.15",
