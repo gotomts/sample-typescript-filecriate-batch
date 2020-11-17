@@ -1,5 +1,5 @@
 import { getRepository, Repository } from "typeorm";
-import { Book } from "../entity/books";
+import { Book } from "../entity/book";
 import { IBookRepository } from "../repository/iBookRepository";
 
 /**

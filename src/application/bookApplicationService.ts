@@ -1,5 +1,5 @@
 import { IBookRepository } from "../repository/iBookRepository";
-import { Book } from "../entity/books";
+import { Book } from "../entity/book";
 
 /**
  * BookApplicationService クラス

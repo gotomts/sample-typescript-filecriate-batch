@@ -1,4 +1,4 @@
-import { Book } from "../entity/books";
+import { Book } from "../entity/book";
 
 /**
  * IBookRepositoryインターフェース
