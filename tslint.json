@@ -1,0 +1,34 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
+  "jsRules": [],
+  "rules": {
+    "typedef-whitespace": true,
+    "no-magic-numbers": true,
+    "object-literal-sort-keys": false,
+    "no-console": false,
+    "prettier": true,
+    "completed-docs": [
+      true,
+      {
+        "classes": true,
+        "enums": true,
+        "enum-members": true,
+        "functions": true,
+        "methods": {
+          "pprivates": [
+            "public",
+            "protected"
+          ]
+        },
+        "interfaces": true
+      }
+    ]
+  },
+  "rulesDirectory": [
+    "tslint-plugin-prettier"
+  ]
+}
