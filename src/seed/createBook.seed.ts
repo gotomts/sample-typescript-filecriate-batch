@@ -1,5 +1,5 @@
 import { Seeder, Factory } from "typeorm-seeding";
-import { Book } from "../entity/book";
+import { Book } from "../entity/books";
 
 /**
  * CreateBooksクラス

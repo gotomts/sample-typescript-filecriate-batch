@@ -8,7 +8,7 @@ import {
 
 /**
  * Bookクラス
- * @description 本のエンティティ
+ * @description 書籍情報エンティティ
  * @export
  * @class Book
  */

@@ -1,17 +1,21 @@
 import { createConnection } from "typeorm";
-const ormconfig = require("../ormconfig");
+
+import { BookApplicationService } from "./application/bookApplicationService";
+import { BookRepository } from "./infrastructure/bookRepository";
+
 /**
  * メイン処理
  */
-const main = () => {
-  createConnection(ormconfig)
-    .then((connection) => {
-      console.log("Hello TypeScript!!");
-      connection.close();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+const main = async () => {
+  try {
+    const connection = await createConnection();
+    const applicationService = new BookApplicationService(new BookRepository());
+    const books = await applicationService.findAll();
+    console.log(books);
+    connection.close();
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 main();
