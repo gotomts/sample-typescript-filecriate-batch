@@ -58,6 +58,7 @@
     "typesync": "^0.8.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.794.0",
     "env-cmd": "^10.1.0",
     "faker": "^5.1.0",
     "mysql2": "^2.2.5",

@@ -1,11 +1,15 @@
 import { createConnection } from "typeorm";
 import fs from "fs";
+import * as AWS from "aws-sdk";
 
 import { BookApplicationService } from "./application/bookApplicationService";
 import { BookRepository } from "./infrastructure/bookRepository";
 import { Book } from "./entity/book";
 
-const filePath = "./files/output.txt";
+const fileName = "output.txt";
+const filePath = `./files/${fileName}`;
+
+const env = process.env;
 
 /**
  * ファイル存在チェック
@@ -53,6 +57,37 @@ const createFile = (filePath: string, outputText: string) => {
 };
 
 /**
+ * AWS S3へファイルアップロード
+ */
+const s3FileUpload = (
+  accessKey: string,
+  secretAccessKeyId: string,
+  regionName: string,
+  bucketName: string,
+  directory: string,
+  fileName: string,
+  body: Buffer
+) => {
+  const s3: AWS.S3 = new AWS.S3({
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKeyId,
+    region: regionName,
+  });
+  const params: AWS.S3.Types.PutObjectRequest = {
+    Bucket: bucketName,
+    Key: `${directory}/${fileName}`,
+    Body: body,
+  };
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("Successfully uploaded file.", data);
+    }
+  });
+};
+
+/**
  * メイン処理
  */
 const main = async () => {
@@ -68,7 +103,17 @@ const main = async () => {
     console.log(outputData);
     // ファイル作成
     createFile(filePath, outputData);
+    const uploadData = fs.readFileSync(filePath);
     // TODO:S3アップロード
+    s3FileUpload(
+      String(env.AWS_S3_ACCESSKEY),
+      String(env.AWS_S3_SECRETACCESSKEY),
+      String(env.AWS_S3_REGION),
+      String(env.AWS_S3_BUCKET_NAME),
+      String(env.AWS_S3_BUCKET_DIRECTORY),
+      fileName,
+      uploadData
+    );
   } catch (err) {
     console.log(err);
   }
