@@ -66,7 +66,7 @@ const s3FileUpload = (
   bucketName: string,
   directory: string,
   fileName: string,
-  body: Buffer
+  body: Buffer | string
 ) => {
   const s3: AWS.S3 = new AWS.S3({
     accessKeyId: accessKey,
@@ -104,15 +104,25 @@ const main = async () => {
     // ファイル作成
     createFile(filePath, outputData);
     const uploadData = fs.readFileSync(filePath);
-    // TODO:S3アップロード
+    // S3アップロード
     s3FileUpload(
-      String(env.AWS_S3_ACCESSKEY),
-      String(env.AWS_S3_SECRETACCESSKEY),
+      String(env.AWS_S3_ACCESS_KEY),
+      String(env.AWS_S3_SECRETACCESS_KEY),
       String(env.AWS_S3_REGION),
       String(env.AWS_S3_BUCKET_NAME),
       String(env.AWS_S3_BUCKET_DIRECTORY),
       fileName,
       uploadData
+    );
+    // S3アップロード
+    s3FileUpload(
+      String(env.AWS_S3_ACCESS_KEY),
+      String(env.AWS_S3_SECRETACCESS_KEY),
+      String(env.AWS_S3_REGION),
+      String(env.AWS_S3_BUCKET_NAME),
+      String(env.AWS_S3_BUCKET_DIRECTORY),
+      "test.txt",
+      String("")
     );
   } catch (err) {
     console.log(err);
