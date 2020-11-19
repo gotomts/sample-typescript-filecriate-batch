@@ -6,21 +6,11 @@ import { BookApplicationService } from "./application/bookApplicationService";
 import { BookRepository } from "./infrastructure/bookRepository";
 import { Book } from "./entity/book";
 
+const filePath = "./files";
 const fileName = "output.txt";
-const filePath = `./files/${fileName}`;
+const fileTestName = "test.txt";
 
 const env = process.env;
-
-/**
- * ファイル存在チェック
- * @param filePath
- */
-const checkFile = (filePath: string): boolean => {
-  if (fs.existsSync(filePath)) {
-    return true;
-  }
-  return false;
-};
 
 /**
  * 書籍情報取得
@@ -49,17 +39,34 @@ const formatData = (books: Book[]): string => {
 };
 
 /**
- * ファイル作成
- * @param outputText
+ * AWS S3 ファイル削除
  */
-const createFile = (filePath: string, outputText: string) => {
-  fs.writeFileSync(filePath, outputText);
+const s3FileDelete = async (
+  accessKey: string,
+  secretAccessKeyId: string,
+  regionName: string,
+  bucketName: string,
+  deleteList: AWS.S3.ObjectIdentifierList
+) => {
+  const s3: AWS.S3 = new AWS.S3({
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKeyId,
+    region: regionName,
+  });
+  const params: AWS.S3.Types.DeleteObjectsRequest = {
+    Bucket: bucketName,
+    Delete: {
+      Objects: deleteList,
+    },
+  };
+  const result = await s3.deleteObjects(params).promise();
+  return result;
 };
 
 /**
  * AWS S3へファイルアップロード
  */
-const s3FileUpload = (
+const s3FileUpload = async (
   accessKey: string,
   secretAccessKeyId: string,
   regionName: string,
@@ -78,13 +85,8 @@ const s3FileUpload = (
     Key: `${directory}/${fileName}`,
     Body: body,
   };
-  s3.upload(params, (err, data) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("Successfully uploaded file.", data);
-    }
-  });
+  const result = await s3.upload(params).promise();
+  return result;
 };
 
 /**
@@ -92,20 +94,28 @@ const s3FileUpload = (
  */
 const main = async () => {
   try {
-    // ファイル存在チェック・削除
-    if (checkFile(filePath)) {
-      fs.unlinkSync(filePath);
-    }
+    // S3ファイル削除
+    const deleteList = Array();
+    deleteList.push({ Key: `${env.AWS_S3_BUCKET_DIRECTORY}/${fileName}` });
+    deleteList.push({ Key: `${env.AWS_S3_BUCKET_DIRECTORY}/${fileTestName}` });
+    const deleteResult = await s3FileDelete(
+      String(env.AWS_S3_ACCESS_KEY),
+      String(env.AWS_S3_SECRETACCESS_KEY),
+      String(env.AWS_S3_REGION),
+      String(env.AWS_S3_BUCKET_NAME),
+      deleteList
+    );
+    console.log(deleteResult);
     // 書籍情報一覧取得
     const books = await getBookAll();
     // ファイル出力するデータを整形
     const outputData = formatData(books);
     console.log(outputData);
     // ファイル作成
-    createFile(filePath, outputData);
-    const uploadData = fs.readFileSync(filePath);
+    fs.writeFileSync(`${filePath}/${fileName}`, outputData);
+    const uploadData = fs.readFileSync(`${filePath}/${fileName}`);
     // S3アップロード
-    s3FileUpload(
+    const uploadResult1 = await s3FileUpload(
       String(env.AWS_S3_ACCESS_KEY),
       String(env.AWS_S3_SECRETACCESS_KEY),
       String(env.AWS_S3_REGION),
@@ -114,16 +124,18 @@ const main = async () => {
       fileName,
       uploadData
     );
+    console.log(uploadResult1);
     // S3アップロード
-    s3FileUpload(
+    const uploadResult2 = await s3FileUpload(
       String(env.AWS_S3_ACCESS_KEY),
       String(env.AWS_S3_SECRETACCESS_KEY),
       String(env.AWS_S3_REGION),
       String(env.AWS_S3_BUCKET_NAME),
       String(env.AWS_S3_BUCKET_DIRECTORY),
-      "test.txt",
+      fileTestName,
       String("")
     );
+    console.log(uploadResult2);
   } catch (err) {
     console.log(err);
   }
