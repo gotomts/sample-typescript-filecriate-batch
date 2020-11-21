@@ -8,6 +8,7 @@
     "test": "jest --runInBand",
     "test:summary": "jest --runInBand --coverage --coverageDirectory=output/coverage --reporters=jest-junit",
     "build": "npm-run-all clean tsc",
+    "dev": "./node_modules/.bin/env-cmd ts-node ./src/main.ts",
     "lint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
     "clean": "rimraf dist",
     "jest": "jest --runInBand --verbose --coverage",
@@ -58,6 +59,7 @@
     "typesync": "^0.8.0"
   },
   "dependencies": {
+    "aws-sdk": "^2.794.0",
     "env-cmd": "^10.1.0",
     "faker": "^5.1.0",
     "mysql2": "^2.2.5",
