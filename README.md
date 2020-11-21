@@ -2,23 +2,37 @@
 
 TypeScript で AWS S3 へファイルをアップロードします。
 
-## TypeScript トランスパイル
+## docker によるビルド・実行
+
+### docker compose による DB 準備
 
 ```
-npm run build
+docker-compose up -d
+```
+
+### ビルド
+
+```
+docker build -t typescript-s3-fileupload:latest .
 ```
 
 ## 実行
 
 ```
-npm run exec
+docker run --network="typescript-s3-fileupload_default" typescript-s3-fileupload
 ```
 
-## 開発時 ts-node 実行
+## npm script
 
-```
-npm run dev
-```
+| npm スクリプト           | 用途                            |
+| ------------------------ | ------------------------------- |
+| npm run build            | トランスパイル                  |
+| npm run exec             | 実行                            |
+| npm run dev              | ts-node 実行                    |
+| npm run migration:run    | マイグレーション実行            |
+| npm run migration:revert | マイグレーションを 1 つ前に戻す |
+| npm run seed:run         | シーディング実行                |
+| npm run schema:drop      | マイグレーションリセット        |
 
 ## 環境変数
 

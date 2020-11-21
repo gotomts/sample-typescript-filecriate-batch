@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:5.7
+    ports:
+      - 13306:3306
+    volumes:
+      - ./docker/db-store:/var/lib/mysql
+      - ./docker/db/etc/mysql/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: typescript-s3-fileupload-db-dev
+      MYSQL_USER: root
+      TZ: Asia/Tokyo
+
+  db-testing:
+    image: mysql:5.7
+    ports:
+      - 13307:3306
+    volumes:
+      - ./docker/db/etc/mysql/conf.d:/etc/mysql/conf.d
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: typescript-s3-fileupload-db-testing
+      MYSQL_USER: root
+      TZ: Asia/Tokyo

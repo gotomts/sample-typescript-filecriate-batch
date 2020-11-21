@@ -6,9 +6,13 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci
 
-# トランスパイル
+# ソースコピー
 COPY tsconfig*.json ./
-COPY . .
+COPY ./src ./src
+COPY .env .
+
+# トランスパイル
 RUN npm run build
 
-CMD [ "node", "./dist/main.js" ]
+# 実行
+CMD npm run exec
