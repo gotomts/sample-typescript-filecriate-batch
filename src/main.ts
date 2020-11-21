@@ -10,7 +10,6 @@ import { Book } from "./entity/book";
 const logger = getLogger();
 logger.level = "info";
 
-const filePath = "./files";
 const fileName = "output.txt";
 const fileTestName = "test.txt";
 
@@ -116,8 +115,8 @@ const main = async () => {
     const outputData = formatData(books);
     logger.info(outputData);
     // ファイル作成
-    fs.writeFileSync(`${filePath}/${fileName}`, outputData);
-    const uploadData = fs.readFileSync(`${filePath}/${fileName}`);
+    fs.writeFileSync(`${fileName}`, outputData);
+    const uploadData = fs.readFileSync(`${fileName}`);
     // S3アップロード
     const uploadResult1 = await s3FileUpload(
       String(env.AWS_S3_ACCESS_KEY),
