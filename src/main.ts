@@ -1,10 +1,14 @@
 import { createConnection } from "typeorm";
 import fs from "fs";
 import * as AWS from "aws-sdk";
+import { getLogger } from "log4js";
 
 import { BookApplicationService } from "./application/bookApplicationService";
 import { BookRepository } from "./infrastructure/bookRepository";
 import { Book } from "./entity/book";
+
+const logger = getLogger();
+logger.level = "info";
 
 const filePath = "./files";
 const fileName = "output.txt";
@@ -105,12 +109,12 @@ const main = async () => {
       String(env.AWS_S3_BUCKET_NAME),
       deleteList
     );
-    console.log(deleteResult);
+    logger.info(deleteResult);
     // 書籍情報一覧取得
     const books = await getBookAll();
     // ファイル出力するデータを整形
     const outputData = formatData(books);
-    console.log(outputData);
+    logger.info(outputData);
     // ファイル作成
     fs.writeFileSync(`${filePath}/${fileName}`, outputData);
     const uploadData = fs.readFileSync(`${filePath}/${fileName}`);
@@ -124,7 +128,7 @@ const main = async () => {
       fileName,
       uploadData
     );
-    console.log(uploadResult1);
+    logger.info(uploadResult1);
     // S3アップロード
     const uploadResult2 = await s3FileUpload(
       String(env.AWS_S3_ACCESS_KEY),
@@ -135,9 +139,9 @@ const main = async () => {
       fileTestName,
       String("")
     );
-    console.log(uploadResult2);
+    logger.info(uploadResult2);
   } catch (err) {
-    console.log(err);
+    logger.error(err);
   }
 };
 

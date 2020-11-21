@@ -59,9 +59,11 @@
     "typesync": "^0.8.0"
   },
   "dependencies": {
+    "@types/log4js": "^2.3.5",
     "aws-sdk": "^2.794.0",
     "env-cmd": "^10.1.0",
     "faker": "^5.1.0",
+    "log4js": "^6.3.0",
     "mysql2": "^2.2.5",
     "reflect-metadata": "^0.1.13",
     "tsconfig-paths": "^3.9.0",
