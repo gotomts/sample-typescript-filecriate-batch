@@ -4,11 +4,11 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "exec": "./node_modules/.bin/env-cmd node ./dist/main.js",
+    "exec": "env-cmd node ./dist/main.js",
     "test": "jest --runInBand",
     "test:summary": "jest --runInBand --coverage --coverageDirectory=output/coverage --reporters=jest-junit",
     "build": "npm-run-all clean tsc",
-    "dev": "./node_modules/.bin/env-cmd ts-node ./src/main.ts",
+    "dev": "env-cmd ts-node ./src/main.ts",
     "lint": "tslint -p tsconfig.json -c tslint.json 'src/**/*.ts'",
     "clean": "rimraf dist",
     "jest": "jest --runInBand --verbose --coverage",
@@ -21,7 +21,9 @@
     "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed",
-    "schema:drop": "ts-node ./node_modules/.bin/typeorm schema:drop"
+    "schema:drop": "ts-node ./node_modules/.bin/typeorm schema:drop",
+    "download": "env-cmd node ./dist/download.js",
+    "download:dev": "env-cmd ts-node ./src/download.ts"
   },
   "repository": {
     "type": "git",
