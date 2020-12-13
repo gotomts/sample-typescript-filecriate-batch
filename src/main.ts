@@ -2,6 +2,7 @@ import { createConnection } from "typeorm";
 import fs from "fs";
 import * as AWS from "aws-sdk";
 import { getLogger } from "log4js";
+import { execSync } from "child_process";
 
 import { BookApplicationService } from "./application/bookApplicationService";
 import { BookRepository } from "./infrastructure/bookRepository";
@@ -116,7 +117,8 @@ const main = async () => {
     logger.info(outputData);
     // ファイル作成
     fs.writeFileSync(`${fileName}`, outputData);
-    const uploadData = fs.readFileSync(`${fileName}`);
+    execSync(`gpg --batch --yes -er ${env.GPG_KEY_USER_ID} ${fileName}`);
+    const uploadData = fs.readFileSync(`${fileName}.gpg`);
     // S3アップロード
     const uploadResult1 = await s3FileUpload(
       String(env.AWS_S3_ACCESS_KEY),
@@ -124,7 +126,7 @@ const main = async () => {
       String(env.AWS_S3_REGION),
       String(env.AWS_S3_BUCKET_NAME),
       String(env.AWS_S3_BUCKET_DIRECTORY),
-      fileName,
+      `${fileName}.gpg`,
       uploadData
     );
     logger.info(uploadResult1);
